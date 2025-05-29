@@ -1,0 +1,2 @@
+C:/Users/ansa/Desktop/flutter/petscare/petscare/android/app/.cxx/Debug/2n4rdcu4/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/ansa/Desktop/flutter/petscare/petscare/android/app/.cxx/Debug/2n4rdcu4/armeabi-v7a/CMakeFiles/rebuild_cache.dir
