@@ -10,7 +10,8 @@ import 'package:petscare/loginpages/sign_Up_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInScreen extends StatefulWidget {
-  const SignInScreen({super.key});
+  final String role;
+  const SignInScreen({super.key, required this.role});
 
   @override
   State<SignInScreen> createState() => _SignInScreenState();
@@ -81,6 +82,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
+    String role = widget.role;
     bool _isLoading = false;
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -98,7 +100,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Let's Get You \nSign In !",
+                        "{Let's Get You \nSign In !",
                         textAlign: TextAlign.start,
                         style: TextStyle(
                           color: const Color(0xff222222),
@@ -159,7 +161,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                     final response = await ApiService.signIn({
                                       'email': emailController.text.trim(),
                                       'password': passwordController.text,
-                                      'role': 'petOwner',
+                                      'role': role,
                                     });
 
                                     if (response.statusCode == 200) {
@@ -275,7 +277,9 @@ class _SignInScreenState extends State<SignInScreen> {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const SignUpScreen()),
+                          builder: (context) => SignUpScreen(
+                                role: role,
+                              )),
                     );
                   },
                   child: const Text(

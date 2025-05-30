@@ -13,7 +13,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../api/user_service.dart';
 
 class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+  final String role;
+  const SignUpScreen({super.key, required this.role});
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
@@ -275,7 +276,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const SignInScreen()),
+                          builder: (context) => SignInScreen(
+                                role: widget.role,
+                              )),
                     );
                   },
                   child: const Text(
@@ -321,7 +324,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         final loginResponse = await ApiService.signIn({
           'email': emailController.text.trim(),
           'password': passwordController.text,
-          'role': 'petOwner',
+          'role': widget.role,
         });
 
         if (loginResponse.statusCode == 200) {

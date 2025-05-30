@@ -9,6 +9,7 @@ class AccountTypeScreen extends StatefulWidget {
 }
 
 class _AccountTypeScreenState extends State<AccountTypeScreen> {
+  String role = "petOwner";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,78 +75,102 @@ class _AccountTypeScreenState extends State<AccountTypeScreen> {
               top: MediaQuery.of(context).size.height * 0.3955,
               child: Row(
                 children: [
-                  Column(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.3944,
-                        height: MediaQuery.of(context).size.height * 0.2511,
-                        decoration: ShapeDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment(0.23, 0.01),
-                            end: Alignment(-0.20, 0.99),
-                            colors: [
-                              const Color(0xFFE1ECE9),
-                              const Color(0xFF99DDCC),
-                            ],
-                          ),
-                          shape: RoundedRectangleBorder(
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        role = 'petOwner'; // Set the selected container
+                      });
+                    },
+                    child: Column(
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.3944,
+                          height: MediaQuery.of(context).size.height * 0.2511,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment(0.23, 0.01),
+                              end: Alignment(-0.20, 0.99),
+                              colors: [
+                                const Color(0xFFE1ECE9),
+                                const Color(0xFF99DDCC),
+                              ],
+                            ),
                             borderRadius: BorderRadius.circular(50),
+                            border: role == 'petOwner'
+                                ? Border.all(
+                                    color: Color(
+                                        0xff99DDCC), // Selected border color
+                                    width: 3.0,
+                                  )
+                                : null,
                           ),
                         ),
-                      ),
-                      SizedBox(height: 18),
-                      Text(
-                        "Pet Owner",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: const Color(0xFF4A4A4A),
-                          fontSize: 15,
-                          fontFamily: 'Poppins2',
-                          letterSpacing: 1.20,
+                        SizedBox(height: 18),
+                        Text(
+                          "Pet Owner",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: const Color(0xFF4A4A4A),
+                            fontSize: 15,
+                            fontFamily: 'Poppins2',
+                            letterSpacing: 1.20,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.0508,
                   ),
-                  Column(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.3944,
-                        height: MediaQuery.of(context).size.height * 0.2511,
-                        decoration: ShapeDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment(0.23, 0.01),
-                            end: Alignment(-0.20, 0.99),
-                            colors: [
-                              const Color(0xFFE1ECE9),
-                              const Color(0xFF99DDCC),
-                            ],
-                          ),
-                          shape: RoundedRectangleBorder(
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        role = 'VeterinaryClinic'; // Set the selected container
+                      });
+                    },
+                    child: Column(
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.3944,
+                          height: MediaQuery.of(context).size.height * 0.2511,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment(0.23, 0.01),
+                              end: Alignment(-0.20, 0.99),
+                              colors: [
+                                const Color(0xFFE1ECE9),
+                                const Color(0xFF99DDCC),
+                              ],
+                            ),
                             borderRadius: BorderRadius.circular(50),
+                            border: role == 'VeterinaryClinic'
+                                ? Border.all(
+                                    color: Color(
+                                        0xff99DDCC), // Selected border color
+                                    width: 3.0,
+                                  )
+                                : null,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 38),
+                            child: Image.asset(
+                                "assets/images/PhotoVeterinaryClinic.png",
+                                fit: BoxFit.none),
                           ),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 38),
-                          child: Image.asset(
-                              "assets/images/PhotoVeterinaryClinic.png",
-                              fit: BoxFit.none),
+                        SizedBox(height: 18),
+                        Text(
+                          "Veterinary Clinic",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: const Color(0xFF4A4A4A),
+                            fontSize: 15,
+                            fontFamily: 'Poppins2',
+                            letterSpacing: 1.20,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 18),
-                      Text(
-                        "Veterinary Clinic",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: const Color(0xFF4A4A4A),
-                          fontSize: 15,
-                          fontFamily: 'Poppins2',
-                          letterSpacing: 1.20,
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -176,7 +201,7 @@ class _AccountTypeScreenState extends State<AccountTypeScreen> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => SignInScreen()));
+                              builder: (context) => SignInScreen(role: role)));
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xff99DDCC),

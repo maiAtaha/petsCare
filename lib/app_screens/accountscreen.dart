@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:petscare/api/user_service.dart';
 import 'package:petscare/app_screens/mycustombutton.dart';
+import 'package:petscare/loginpages/account_type_screen.dart';
 import 'package:petscare/loginpages/sign_In_Screen.dart';
 
 class Accountscreen extends StatefulWidget {
@@ -62,7 +63,8 @@ class _AccountscreenState extends State<Accountscreen> {
             print("logout is =+============================");
             Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => const SignInScreen()),
+              MaterialPageRoute(
+                  builder: (context) => const AccountTypeScreen()),
               (route) => false, // This removes all previous routes
             );
           } catch (e) {
