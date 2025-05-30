@@ -154,7 +154,7 @@ class _HomescreenState extends State<Homescreen> {
                       Expanded(
                         child: Form(
                           child: TextFormField(
-                            onChanged: (value) { _searchClinics(value)},
+                            onChanged: (value) {   fetchClinics(value)},
                             decoration: InputDecoration(
                                 hintText: "  Search",
                                 hintStyle: TextStyle(
