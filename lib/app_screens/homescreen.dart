@@ -6,11 +6,7 @@ import 'package:http/http.dart' as http;
 import '../api/user_service.dart';
 import 'dart:async';
 
-/////////////////////main
-List<Map<String, dynamic>> searchResults = [];
-Map<String, dynamic>? nextAppointment;
 
-///////////////////////
 class Homescreen extends StatefulWidget {
   const Homescreen({super.key});
 
@@ -22,11 +18,19 @@ class _HomescreenState extends State<Homescreen> {
   String userName = '';
   Timer? _debounce;
 
+
+  /////////////////////main
+List<Map<String, dynamic>> searchResults = [];
+Map<String, dynamic>? nextAppointment;
+List<Map<String, dynamic>> nearbyClinics = [];
+
+///////////////////////
   @override
   void initState() {
     super.initState();
     _loadUserData();
     _loadNextAppointment();
+    _loadNearbyClinics();
   }
 
   Future<void> _loadUserData() async {
@@ -36,7 +40,9 @@ class _HomescreenState extends State<Homescreen> {
     });
   }
 
-  ////////////////////////main
+  ////////////////////////mai
+
+
   Future<void> _loadNextAppointment() async {
     final ownerId = await UserService.getUserId();
     if (ownerId != null) {
@@ -68,7 +74,7 @@ class _HomescreenState extends State<Homescreen> {
         });
       }
     } else {
-      print("Error fetching next appointment: ${response.statusCode}");
+      print("Error fetching next appointment: ${response.statusCode} - ${response.body}");
     }
   }
 
@@ -89,9 +95,32 @@ class _HomescreenState extends State<Homescreen> {
         });
       }
     } else {
-      print("Error fetching clinics: ${response.statusCode}");
+      print("Error fetching clinics:  ${response.statusCode} - ${response.body}");
     }
   }
+Future<void> _loadNearbyClinics() async {
+  String? userAddress = await UserService.getUserAddress();
+  if (userAddress != null) {
+    final url = Uri.parse('https://api.docai.online/api/clinics/nearby/$userAddress');
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      try {
+        final List<dynamic> data = jsonDecode(response.body);
+        setState(() {
+          nearbyClinics = List<Map<String, dynamic>>.from(data);
+        });
+      } catch (e) {
+        print('Nearby clinics JSON decode error: $e');
+        setState(() {
+          nearbyClinics = [];
+        });
+      }
+    } else {
+      print("Error fetching nearby clinics: ${response.statusCode} - ${response.body}");
+    }
+  }
+}
 
   @override
   void dispose() {
@@ -173,7 +202,7 @@ class _HomescreenState extends State<Homescreen> {
                             ),
                           ],
                         ),
-                        Spacer(),
+                       const Spacer(),
                         SizedBox(
                           height: screenHeight * 0.0707,
                           child: Row(
@@ -333,27 +362,31 @@ class _HomescreenState extends State<Homescreen> {
                     ),
                     
                     // CLINICS NEAR YOU CARDS
-                    ...searchResults.isNotEmpty
-                        ? searchResults.map((clinic) => Clinicsnearcard(
-                              nameclinic: clinic['name'] ?? '',
-                              imageclinic: (clinic['image']?.toString().startsWith('http') ?? false)
-                                  ? clinic['image']
-                                  : 'assets/images/photocli.jpg',
-                              cliniclocation: clinic['address'] ?? '',
-                              rating: double.tryParse(clinic['rating']?.toString() ?? '0') ?? 0.0,
-                            ))
-                        : [
-                            Clinicsnearcard(
-                              nameclinic: "Vetspetsclinic",
-                              imageclinic: "assets/images/photocli1.jpg",
-                              cliniclocation: "amman, jordan",
-                              rating: 5.0),
-                            Clinicsnearcard(
-                              nameclinic: "Vetspetsclinic",
-                              imageclinic: "assets/images/photocli1.jpg",
-                              cliniclocation: "amman, jordan",
-                              rating: 5.0),
-                          ],
+                    ////////////////////////////////mai
+                   ...searchResults.isNotEmpty
+    ? searchResults.map((clinic) => Clinicsnearcard(
+        nameclinic: clinic['name'] ?? '',
+        imageclinic: (clinic['image']?.toString().startsWith('http') ?? false)
+            ? clinic['image']
+            : 'assets/images/photocli.jpg',
+        cliniclocation: clinic['address'] ?? '',
+        rating: double.tryParse(clinic['rating']?.toString() ?? '0') ?? 0.0,
+      ))
+    : nearbyClinics.isNotEmpty
+        ? nearbyClinics.map((clinic) => Clinicsnearcard(
+            nameclinic: clinic['userName'] ?? '',
+            imageclinic: 'assets/images/photocli.jpg', 
+            cliniclocation: clinic['address'] ?? '',
+            rating: double.tryParse(clinic['rating']?.toString() ?? '0') ?? 0.0,
+          ))
+        : [
+            Clinicsnearcard(
+              nameclinic: "Vetspetsclinic",
+              imageclinic: "assets/images/photocli1.jpg",
+              cliniclocation: "amman, jordan",
+              rating: 5.0),
+          ],
+                    /////////////////////////////////////////
                   ],
                 ),
               ),
