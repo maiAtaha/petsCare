@@ -22,6 +22,7 @@ class _SignInScreenState extends State<SignInScreen> {
   late final List<Map<String, dynamic>> fields;
 
   bool passwordVisible = false;
+  bool _isLoading = false;
   final GlobalKey<FormState> _formKey =
       GlobalKey<FormState>(); // Renamed for clarity
 
@@ -81,7 +82,6 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    bool _isLoading = false;
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: Column(
