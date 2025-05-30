@@ -3,7 +3,9 @@ import 'package:petscare/app_screens/appointmentCards.dart';
 import 'package:petscare/app_screens/clinicsNearCard.dart';
 
 import '../api/user_service.dart';
-
+/////////////////////mai
+List<Map<String, dynamic>> searchResults = [];
+///////////////////////
 class Homescreen extends StatefulWidget {
   const Homescreen({super.key});
 
@@ -25,7 +27,22 @@ class _HomescreenState extends State<Homescreen> {
       userName = name;
     });
   }
+  /////////////////////////mai
 
+  Future<void> fetchClinics(String keyword) async {
+    final url = Uri.parse('https://api.docai.online/api/clinics/search?q=$keyword');
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final List decoded = jsonDecode(response.body);
+      setState(() {
+        searchResults = List<Map<String, dynamic>>.from(decoded);
+      });
+    } else {
+      print("Error fetching clinics");
+    }
+  }
+/////////////////////////////
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -137,7 +154,7 @@ class _HomescreenState extends State<Homescreen> {
                       Expanded(
                         child: Form(
                           child: TextFormField(
-                            onChanged: (value) {},
+                            onChanged: (value) { _searchClinics(value)},
                             decoration: InputDecoration(
                                 hintText: "  Search",
                                 hintStyle: TextStyle(
@@ -266,6 +283,14 @@ class _HomescreenState extends State<Homescreen> {
                       ],
                     ),
                   ),
+                  if (searchResults.isNotEmpty)
+  ...searchResults.map((clinic) => Clinicsnearcard(
+        nameclinic: clinic['name'] ?? '',
+        imageclinic: "assets/images/photocli1.jpg", // أو استخدم clinic['imageUrl'] إن وُجد
+        cliniclocation: clinic['address'] ?? '',
+        rating: double.tryParse(clinic['rating']?.toString() ?? '0') ?? 0.0,
+      )),
+else ...[
                   Clinicsnearcard(
                       nameclinic: "Vetspetsclinic",
                       imageclinic: "assets/images/photocli1.jpg",
