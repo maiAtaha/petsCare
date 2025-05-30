@@ -36,10 +36,14 @@ class Clinicsnearcard extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CircleAvatar(
-                radius: 30,
-                backgroundImage: AssetImage(imageclinic),
-              ),
+              //////////////////////mai
+             CircleAvatar(
+  radius: 30,
+  backgroundImage: imageclinic.startsWith('http')
+      ? NetworkImage(imageclinic)
+      : AssetImage(imageclinic) as ImageProvider,
+),
+///////////////////////mai
               Padding(
                 padding: const EdgeInsets.only(left: 15),
                 child: Column(
