@@ -283,6 +283,7 @@ class _HomescreenState extends State<Homescreen> {
                       ],
                     ),
                   ),
+                  ///////////////////////////mai
                   if (searchResults.isNotEmpty)
   ...searchResults.map((clinic) => Clinicsnearcard(
         nameclinic: clinic['name'] ?? '',
@@ -291,6 +292,7 @@ class _HomescreenState extends State<Homescreen> {
         rating: double.tryParse(clinic['rating']?.toString() ?? '0') ?? 0.0,
       )),
 else ...[
+  /////////////////////////
                   Clinicsnearcard(
                       nameclinic: "Vetspetsclinic",
                       imageclinic: "assets/images/photocli1.jpg",
